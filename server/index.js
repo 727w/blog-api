@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const userRouter = require("./routes/userRouter");
 const postRouter = require("./routes/postRouter");
+const authRouter = require("./routes/authRouter");
 require("dotenv").config();
 const corsOption = {
   origin: ["http://localhost:5173"],
@@ -25,6 +26,7 @@ app.get("/api", (req, res) => {
 });
 app.use("/", userRouter);
 app.use("/", postRouter);
+app.use("/", authRouter);
 
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}/api`);

@@ -3,11 +3,12 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 
 async function createUser(req, res, next) {
+  const { username } = req.body;
   try {
     const password = await bcrypt.hash(req.body.password, 10);
     await prisma.user.create({
       data: {
-        username: req.body.username,
+        username,
         password,
       },
     });
