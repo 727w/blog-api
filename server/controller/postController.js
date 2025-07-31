@@ -1,6 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const path = require("path");
 
 async function showAllPost(req, res) {
   try {
@@ -13,7 +12,14 @@ async function showAllPost(req, res) {
       res.status(404).json({ error: "There is no post yet" });
     }
 
-    res.json(posts);
+    const postsWithImageUrl = posts.map((post) => ({
+      ...post,
+      imageUrl: post.cover_path
+        ? `http://localhost:8080/images/${post.cover_path}`
+        : null,
+    }));
+
+    res.json(postsWithImageUrl);
   } catch (error) {
     res
       .status(500)
@@ -26,7 +32,7 @@ async function createPost(req, res) {
   const { userId } = req.user;
   const imageFile = req.file;
 
-  const imagePath = Date.now() + path.extname(imageFile.originalname);
+  const imagePath = imageFile.filename;
 
   if (!title || !content) {
     return res.status(400).json({ error: "Fields can't be empty" });

@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 8080;
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/images", express.static("public/images"));
 
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
