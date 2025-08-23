@@ -90,13 +90,31 @@ async function getPostDetail(req, res) {
       },
     });
 
+    const author = await prisma.user.findUnique({
+      where: {
+        id: postDetail.authorId,
+      },
+    });
+
     if (postDetail === null) {
       res
         .status(404)
         .json({ error: "Could not find the post detail you were looking for" });
     }
 
-    res.json(postDetail);
+    if (author === undefined) {
+      res.status(404).json({ error: "Author not found" });
+    }
+
+    const post = {
+      ...postDetail,
+      imageUrl: postDetail.cover_path
+        ? `http://localhost:8080/images/${postDetail.cover_path}`
+        : null,
+      authorName: author ? author.username : "Unknown Author",
+    };
+
+    res.json(post);
   } catch (error) {
     res
       .status(500)
@@ -143,11 +161,28 @@ async function getAllComments(req, res) {
       },
     });
 
+    const userName = await prisma.user.findMany({
+      where: {
+        id: {
+          in: comments.map((comment) => comment.userId),
+        },
+      },
+    });
+
     if (comments === null) {
       res.json("message not found");
     }
 
-    res.json(comments);
+    const commentsWithUser = comments.map((comment) => {
+      const user = userName.find((user) => user.id === comment.userId);
+      return {
+        ...comment,
+        user: user ? user.username : "Unknown User",
+        createdAt: comment.createdAt.toISOString(),
+      };
+    });
+
+    res.json(commentsWithUser);
   } catch (error) {
     res
       .status(500)
