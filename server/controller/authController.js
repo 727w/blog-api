@@ -26,7 +26,7 @@ async function login(req, res) {
       maxAge: 10 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ message: "Login successful" });
+    res.json({ message: "Login successful", username: user.username });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

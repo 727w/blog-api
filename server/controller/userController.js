@@ -18,6 +18,7 @@ async function createUser(req, res, next) {
     }
     next(error);
   }
+  return res.status(201).json({ message: "User created successfully." });
 }
 
 module.exports = {
