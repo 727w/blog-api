@@ -5,7 +5,8 @@ const postRouter = require("./routes/postRouter");
 const authRouter = require("./routes/authRouter");
 require("dotenv").config();
 const corsOption = {
-  origin: ["http://localhost:5173"],
+  origin: "http://localhost:5173",
+  credentials: true,
 };
 
 const app = express();

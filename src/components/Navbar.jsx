@@ -1,6 +1,13 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, []);
+
   return (
     <nav className="w-full px-4 py-2 flex items-center justify-center border-b-slate-700 border bg-dark">
       <div className="w-full xl:w-[70%] flex justify-between items-center">
@@ -36,15 +43,23 @@ export default function Navbar() {
           </div>
         </Link>
         <div className="flex items-center justify-center gap-2 w-max">
-          <Link to="/login" className="text-t-light hover:underline">
-            Login
-          </Link>
-          <Link
-            to="/signup"
-            className="text-alt bg-main font-bold p-2 rounded-md"
-          >
-            Sign Up
-          </Link>
+          {username ? (
+            <>
+              <Link to="/user/profile" className="text-t-light font-bold">{username}</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="text-t-light hover:underline">
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="text-alt bg-main font-bold p-2 rounded-md"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

@@ -21,7 +21,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#0c0d11]">
+    <div className="min-h-screen w-full bg-dark">
       <main className="w-full xl:w-[60%] m-auto">
         <div className="px-4 py-6 w-min max-sm:mx-auto flex flex-row justify-center items-center gap-4">
           {data.length === 0 ? (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../utils/api";
+import { toast } from "sonner";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,11 +11,15 @@ export default function SignUp() {
   async function handleSignUp(e) {
     e.preventDefault();
     try {
-      const data = await signup(
+      const res = await signup(
         e.target.username.value,
         e.target.password.value
       );
-      console.log("Sign up success:", data);
+      if (res && res.error) {
+        toast.error(res.error);
+        return;
+      }
+      toast.success("Account created successfully!");
       navigate("/login");
     } catch (error) {
       console.error("Sign up failed:", error);
@@ -36,7 +41,7 @@ export default function SignUp() {
             type="text"
             id="username"
             name="username"
-            className="border-2 border-white rounded-md text-t-light h-9"
+            className="px-1 border-2 border-white rounded-md text-t-light h-9 focus:outline-0"
             required
           />
           <label htmlFor="password" className="text-t-light">
@@ -47,7 +52,7 @@ export default function SignUp() {
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
-              className="border-2 border-white rounded-md text-t-light h-9 w-full pr-10"
+              className="px-1 border-2 border-white rounded-md text-t-light h-9 w-full pr-10 focus:outline-0"
               required
             />
             <button
@@ -96,7 +101,7 @@ export default function SignUp() {
         </form>
         <p className="mt-4 text-gray-200 self-end">
           Already have an account?{" "}
-          <a href="/login" className="text-main">
+          <a href="/login" className="text-main underline">
             Log in
           </a>
         </p>

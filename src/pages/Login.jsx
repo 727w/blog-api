@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../utils/api";
+import { toast } from "sonner";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,29 +12,26 @@ export default function Login() {
     const username = e.target.username.value;
     const password = e.target.password.value;
 
-    const res = await fetch("http://localhost:8080/api/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-      credentials: "include",
-    });
+    const res = await login(username, password);
 
     let data;
-    
+
     try {
       data = await res.json();
     } catch (e) {
-      const text = await res.text();
-      console.error("Response is not JSON:", text);
-      throw e;
+      console.error("Response is not JSON:", e);
     }
 
     if (res.ok) {
+      localStorage.setItem("username", data.username); // Save username
       navigate("/");
+      toast.success("Logged in successfully!", {
+        description: `Welcome back, ${username}!`,
+      });
     } else {
-      alert(data.error || "Failed to log in");
+      toast.error(data.error || "Failed to log in", {
+        description: "Invalid username or password",
+      });
     }
   };
 
@@ -51,7 +50,7 @@ export default function Login() {
             type="text"
             id="username"
             name="username"
-            className="border-2 border-white rounded-md text-t-light h-9"
+            className="px-1 border-2 border-white rounded-md text-t-light h-9 focus:outline-0"
             required
           />
           <label htmlFor="password" className="text-t-light">
@@ -62,7 +61,7 @@ export default function Login() {
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
-              className="border-2 border-white rounded-md text-t-light h-9 w-full pr-10"
+              className="px-1 border-2 border-white rounded-md text-t-light h-9 w-full pr-10 focus:outline-0"
               required
             />
             <button
@@ -110,7 +109,7 @@ export default function Login() {
           </button>
           <p className="mt-4 text-gray-200 self-end">
             Doesn't have an account yet?{" "}
-            <a href="/signup" className="text-main">
+            <a href="/signup" className="text-main underline">
               Sign up
             </a>
           </p>
