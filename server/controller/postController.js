@@ -42,7 +42,7 @@ async function createPost(req, res) {
   }
 
   try {
-    await prisma.post.create({
+    const post = await prisma.post.create({
       data: {
         title,
         content,
@@ -50,6 +50,7 @@ async function createPost(req, res) {
         cover_path: imagePath,
       },
     });
+    res.status(200).json(post.id);
   } catch (error) {
     res
       .status(500)

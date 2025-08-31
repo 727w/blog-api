@@ -5,8 +5,9 @@ import Navbar from "./components/Navbar";
 import Detail from "./pages/Detail";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
-import { Toaster } from "sonner";
 import Profile from "./components/Profile";
+import AddPost from "./pages/AddPost";
+import { Toaster } from "sonner";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/user/profile" element={<Profile />} />
+          <Route path="/add/post" element={<AddPost />} />
         </Routes>
       </Router>
     </>

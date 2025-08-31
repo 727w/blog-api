@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import dateFormat from "../utils/dateFormat";
 
+function stripHtml(html) {
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+}
+
 export default function PostCard({ post }) {
   const date = dateFormat(post.createdAt);
 
@@ -18,9 +24,9 @@ export default function PostCard({ post }) {
         <div className="p-2 flex-1">
           <h2 className="text-main font-bold text-2xl">{post.title}</h2>
           <p className="text-t-light">
-            {post.content.length > 100
-              ? post.content.slice(0, 100) + "..."
-              : post.content}
+            {stripHtml(post.content).length > 100
+              ? stripHtml(post.content).slice(0, 100) + "..."
+              : stripHtml(post.content)}
           </p>
         </div>
         <div className="text-t-light mt-2 font-bold m-3 self-end">{date}</div>

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRouter");
 const postRouter = require("./routes/postRouter");
 const authRouter = require("./routes/authRouter");
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 8080;
 
 app.use(cors(corsOption));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use("/images", express.static("public/images"));
 
