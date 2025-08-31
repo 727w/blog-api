@@ -22,7 +22,7 @@ export default function SignUp() {
       toast.success("Account created successfully!");
       navigate("/login");
     } catch (error) {
-      console.error("Sign up failed:", error);
+      toast.error("Sign up failed");
     }
   }
 

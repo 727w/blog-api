@@ -53,4 +53,27 @@ async function getAllComments(id) {
   return data;
 }
 
-export { getAllPost, getPostDetail, getAllComments, login, signup, logout };
+async function postArticle(title, content, image) {
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("content", content);
+  formData.append("image", image);
+
+  const response = await fetch(`${BASE_URL}/post/new`, {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+
+  return response.json();
+}
+
+export {
+  getAllPost,
+  getPostDetail,
+  getAllComments,
+  login,
+  signup,
+  logout,
+  postArticle,
+};

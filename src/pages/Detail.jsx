@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllComments, getPostDetail } from "../utils/api";
 import { useParams } from "react-router-dom";
+import parse from "html-react-parser";
 import dateFormat from "../utils/dateFormat";
 import Comments from "../components/Comments";
 
@@ -23,9 +24,12 @@ export default function Detail() {
   const date = dateFormat(postData.createdAt);
 
   useEffect(() => {
-    postDetail(pageId);
-    getComments(pageId);
-    setLoading(false);
+    const fetchData = async () => {
+      await postDetail(pageId);
+      await getComments(pageId);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
   if (loading) {
@@ -39,9 +43,7 @@ export default function Detail() {
           {postData.title}
         </h1>
         <div className="flex items-center mb-8">
-          <span className="text-main font-light">
-            {postData.authorName}
-          </span>
+          <span className="text-main font-light">{postData.authorName}</span>
           <span className="text-t-light font-light">, {date}</span>
         </div>
         <img
@@ -50,7 +52,9 @@ export default function Detail() {
           className="w-max h-full lg:h-80 object-cover rounded-xl shadow mx-auto"
         />
         <article className="text-t-light prose lg:prose-xl mt-20">
-          {postData.content}
+          {typeof postData.content === "string"
+            ? parse(postData.content)
+            : null}
         </article>
         <div className="border-t border mt-50">
           <Comments data={commentData} />
