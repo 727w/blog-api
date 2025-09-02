@@ -27,6 +27,32 @@ async function showAllPost(req, res) {
   }
 }
 
+async function showUserPost(req, res) {
+  if (!req.user || !req.user.userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        authorId: Number(req.user.userId),
+      },
+    });
+
+    const postsWithImageUrl = posts.map((post) => ({
+      ...post,
+      imageUrl: post.cover_path
+        ? `http://localhost:8080/images/${post.cover_path}`
+        : null,
+    }));
+
+    res.json(postsWithImageUrl);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to get user posts", details: error.message });
+  }
+}
+
 async function createPost(req, res) {
   const { title, content } = req.body;
   const { userId } = req.user;
@@ -191,11 +217,31 @@ async function getAllComments(req, res) {
   }
 }
 
+async function getUserComments(req, res) {
+  if (!req.user || !req.user.userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { userId: Number(req.user.userId) },
+    });
+    if (!comments || comments.length === 0)
+      return res.status(404).json({ error: "No comments found" });
+    res.json(comments);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to get user comments", details: error.message });
+  }
+}
+
 module.exports = {
   showAllPost,
+  showUserPost,
   createPost,
   searchPostByTitle,
   getPostDetail,
   createComment,
   getAllComments,
+  getUserComments
 };

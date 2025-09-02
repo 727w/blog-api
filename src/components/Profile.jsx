@@ -1,19 +1,25 @@
 import { toast } from "sonner";
 import { logout } from "../utils/api";
 import { Link } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 export default function Profile() {
+  const { user } = useUser();
+
   async function handleLogout() {
     const res = await logout();
     if (res.ok) {
-      localStorage.removeItem("username");
       window.location.href = "/login";
     }
     toast.success("Logged out");
   }
 
-  if (!localStorage.getItem("username")) {
-    window.location.href = "/login";
+  if (!user) {
+    return (
+      <div className="min-h-screen w-full bg-dark flex items-center justify-center">
+        <p className="text-t-light">Loading...</p>
+      </div>
+    );
   }
 
   return (
@@ -70,7 +76,7 @@ export default function Profile() {
                 </clipPath>
               </defs>
             </svg>
-            <p className="text-main">{localStorage.getItem("username")}</p>
+            <p className="text-main">{user.username}</p>
           </div>
           <Link
             to="/add/post"
@@ -78,6 +84,14 @@ export default function Profile() {
           >
             <p className="font-extrabold text-2xl text-main">+</p>
             <p className="mt-[3px]">Add new post</p>
+          </Link>
+        </div>
+        <div className="w-full border-2 rounded-2xl border-t-light p-4 my-4 flex flex-col gap-2">
+          <Link to="/user/activity" className="text-t-light font-bold">
+            Posts: {user.posts.length || "No posts found"}
+          </Link>
+          <Link to="/user/activity" className="text-t-light font-bold">
+            Comments: {user.comments.length || "No comments found"}
           </Link>
         </div>
         <button

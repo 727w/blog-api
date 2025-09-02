@@ -14,6 +14,15 @@ async function login(username, password) {
   return res;
 }
 
+async function getCurrentUser() {
+  const res = await fetch(`${BASE_URL}/auth/current-user`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  return res.json();
+}
+
 async function logout() {
   const res = await fetch(`${BASE_URL}/auth/logout`, {
     method: "POST",
@@ -41,6 +50,20 @@ async function getAllPost() {
   return data;
 }
 
+async function getUserPosts() {
+  const res = await fetch(`${BASE_URL}/user/posts`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text);
+  }
+
+  return res.json();
+}
+
 async function getPostDetail(id) {
   const response = await fetch(`${BASE_URL}/post/detail/${id}`);
   const data = await response.json();
@@ -51,6 +74,18 @@ async function getAllComments(id) {
   const response = await fetch(`${BASE_URL}/post/detail/${id}/comments`);
   const data = await response.json();
   return data;
+}
+
+async function getUserComments() {
+  const response = await fetch(`${BASE_URL}/user/comments`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text);
+  }
+  return response.json();
 }
 
 async function postArticle(title, content, image) {
@@ -72,8 +107,11 @@ export {
   getAllPost,
   getPostDetail,
   getAllComments,
+  getUserComments,
   login,
   signup,
   logout,
   postArticle,
+  getCurrentUser,
+  getUserPosts,
 };

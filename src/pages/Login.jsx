@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../utils/api";
+import { getCurrentUser, login } from "../utils/api";
 import { toast } from "sonner";
+import { useUser } from "../context/UserContext";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const { setUser } = useUser();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -14,22 +17,17 @@ export default function Login() {
 
     const res = await login(username, password);
 
-    let data;
-
-    try {
-      data = await res.json();
-    } catch (e) {
-      console.error("Response is not JSON:", e);
-    }
-
     if (res.ok) {
-      localStorage.setItem("username", data.username); // Save username
-      navigate("/");
+      const userData = await getCurrentUser();
+      setUser(userData.user);
+      console.log(userData.user);
+
       toast.success("Logged in successfully!", {
         description: `Welcome back, ${username}!`,
       });
+      navigate("/");
     } else {
-      toast.error(data.error || "Failed to log in", {
+      toast.error("Failed to log in", {
         description: "Invalid username or password",
       });
     }

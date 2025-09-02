@@ -7,14 +7,18 @@ const {
   getPostDetail,
   getAllComments,
   createComment,
+  showUserPost,
+  getUserComments,
 } = require("../controller/postController");
 const imageUpload = require("../middleware/upload");
 const authenticateJWT = require("../middleware/authenticateJWT");
 
 router.get("/api/post/all", showAllPost);
+router.get("/api/user/posts", authenticateJWT, showUserPost);
 router.get("/api/post/:title", searchPostByTitle);
 router.get("/api/post/detail/:id", getPostDetail);
 router.get("/api/post/detail/:id/comments", getAllComments);
+router.get("/api/user/comments", authenticateJWT, getUserComments);
 router.post(
   "/api/post/new",
   imageUpload.single("image"),
@@ -24,4 +28,3 @@ router.post(
 router.post("/api/post/:postId/comment", authenticateJWT, createComment);
 
 module.exports = router;
-

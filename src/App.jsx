@@ -8,23 +8,28 @@ import Login from "./pages/Login";
 import Profile from "./components/Profile";
 import AddPost from "./pages/AddPost";
 import { Toaster } from "sonner";
+import { UserProvider } from "./context/UserContext";
+import UserActivity from "./pages/UserActivity";
 
 function App() {
   return (
     <>
-      <Toaster />
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/post/:id/detail" element={<Detail />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/user/profile" element={<Profile />} />
-          <Route path="/add/post" element={<AddPost />} />
-        </Routes>
-      </Router>
+      <UserProvider>
+        <Toaster />
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/post/:id/detail" element={<Detail />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/user/profile" element={<Profile />} />
+            <Route path="/add/post" element={<AddPost />} />
+            <Route path="/user/activity" element={<UserActivity />} />
+          </Routes>
+        </Router>
+      </UserProvider>
     </>
   );
 }

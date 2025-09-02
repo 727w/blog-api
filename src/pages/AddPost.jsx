@@ -35,6 +35,10 @@ export default function AddPost() {
     }
   };
 
+  // if (!user) {
+  //   window.location.href = "/login";
+  // }
+
   return (
     <div className="min-h-screen w-full bg-dark">
       <main className="w-full xl:w-[60%] m-auto flex flex-col justify-center items-center gap-4 p-8">
