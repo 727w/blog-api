@@ -1,20 +1,35 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { postComment } from "../utils/api";
+import { toast } from "sonner";
 
 export default function AddComments() {
   const [comment, setComment] = useState("");
+  const { id } = useParams();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!comment.trim()) return;
+    try {
+      await postComment(id, comment);
+      setComment("");
+    } catch (error) {
+      toast.error("Error adding comment:", error);
+    }
+  };
 
   return (
-    <form className="flex items-center gap-2">
+    <form className="flex items-center gap-2" onSubmit={handleSubmit}>
       <input
         type="text"
-        name="comment"
+        name="content"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         className="text-t-light focus:outline-0"
         placeholder="Add a comments..."
       />
       {comment.trim() && (
-        <button className="cursor-pointer">
+        <button type="submit" className="cursor-pointer">
           <svg
             viewBox="0 0 24 24"
             fill="#f6f5f5"

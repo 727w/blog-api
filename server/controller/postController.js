@@ -154,6 +154,10 @@ async function createComment(req, res) {
   const { userId } = req.user;
   const { postId } = req.params;
 
+  if (!userId) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+
   try {
     const comment = await prisma.comment.create({
       data: {
@@ -243,5 +247,5 @@ module.exports = {
   getPostDetail,
   createComment,
   getAllComments,
-  getUserComments
+  getUserComments,
 };

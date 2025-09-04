@@ -35,9 +35,9 @@ export default function AddPost() {
     }
   };
 
-  // if (!user) {
-  //   window.location.href = "/login";
-  // }
+  if (!user) {
+    window.location.href = "/login";
+  }
 
   return (
     <div className="min-h-screen w-full bg-dark">

@@ -103,6 +103,19 @@ async function postArticle(title, content, image) {
   return response.json();
 }
 
+async function postComment(id, content) {
+  const res = await fetch(`${BASE_URL}/post/${id}/comment`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ content }),
+    credentials: "include",
+  });
+
+  return res.json();
+}
+
 export {
   getAllPost,
   getPostDetail,
@@ -114,4 +127,5 @@ export {
   postArticle,
   getCurrentUser,
   getUserPosts,
+  postComment,
 };
