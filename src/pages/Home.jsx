@@ -21,13 +21,13 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-t-light loader">Loading...</div>;
+    return <div className="min-h-screen w-full bg-dark text-center text-main loader"></div>;
   }
 
   return (
     <div className="min-h-screen w-full bg-dark">
       <main className="w-full xl:w-[60%] m-auto">
-        <div className="px-4 py-6 w-min max-sm:mx-auto flex flex-row justify-center items-center gap-4">
+        <div className="px-4 py-6 w-full max-sm:mx-auto flex flex-row flex-wrap justify-center items-center gap-4">
           {data.length === 0 ? (
             <p className="">No posts found.</p>
           ) : (

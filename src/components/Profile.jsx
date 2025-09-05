@@ -17,7 +17,7 @@ export default function Profile() {
   if (!user) {
     return (
       <div className="min-h-screen w-full bg-dark flex items-center justify-center">
-        <p className="text-t-light">Loading...</p>
+        <p className="min-h-screen w-full bg-dark loader text-t-light"></p>
       </div>
     );
   }

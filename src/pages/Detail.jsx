@@ -33,7 +33,7 @@ export default function Detail() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="min-h-screen w-full bg-dark loader text-main"></div>;
   }
 
   return (
