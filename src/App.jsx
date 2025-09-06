@@ -5,11 +5,12 @@ import Navbar from "./components/Navbar";
 import Detail from "./pages/Detail";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
-import Profile from "./components/Profile";
+import Profile from "./pages/Profile";
 import AddPost from "./pages/AddPost";
 import { Toaster } from "sonner";
 import { UserProvider } from "./context/UserContext";
 import UserActivity from "./pages/UserActivity";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/add/post" element={<AddPost />} />
             <Route path="/user/activity" element={<UserActivity />} />
           </Routes>
+          <Footer />
         </Router>
       </UserProvider>
     </>
