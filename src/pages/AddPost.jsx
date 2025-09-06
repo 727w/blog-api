@@ -4,8 +4,11 @@ import MenuBar from "../components/MenuBar";
 import { postArticle } from "../utils/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 export default function AddPost() {
+  const user = useUser();
+
   const editor = useEditor(
     {
       extensions: [StarterKit],
